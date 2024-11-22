@@ -1,21 +1,40 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import Homepage from "./pages/HomePage";
-import SearchResults from "./pages/SearchResults";
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import HomeScreen from './pages/HomePage';
+import SearchScreen from './pages/SearchResults';
+import ProfileScreen from './pages/ProfilePage';
+import BottomNavigation from './Components/BottomNavigation';
+import PlayerBar from './Components/playbar';
 
-const Stack = createStackNavigator();
+export default function App() {
+  const [currentScreen, setCurrentScreen] = useState('Home');
 
-const App = () => {
+  const renderScreen = () => {
+    switch (currentScreen) {
+      case 'Home':
+        return <HomeScreen />;
+      case 'Search':
+        return <SearchScreen />;
+      case 'Profile':
+        return <ProfileScreen />;
+      default:
+        return <HomeScreen />;
+    }
+  };
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Homepage">
-        <Stack.Screen name="Homepage" component={Homepage} />
-        <Stack.Screen name="SearchResults" component={SearchResults} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={styles.container}>
+    {renderScreen()}
+    <PlayerBar />
+    <BottomNavigation currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} />
+  </View>
   );
-};
+}
 
-export default App;
-1
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#121212',
+  },
+});
+
